@@ -31,16 +31,6 @@ class DiaryNoteController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -95,9 +85,15 @@ class DiaryNoteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(DiaryNoteRequest $request, $id)
     {
-        //
+        $diary = DiaryNote::findOrFail($id);
+        $diary->update($request->all());
+        $diary->save();
+        return \response()->json([
+            'message' => 'success',
+            'data' => $diary
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -108,6 +104,10 @@ class DiaryNoteController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $diary = DiaryNote::findOrFail($id);
+        $diary->delete();
+        return \response()->json([
+            'message' => 'success',
+        ], Response::HTTP_OK);
     }
 }
