@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\DiaryNotes;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DiaryNoteRequest;
+use App\Models\DiaryNote;
 use App\Repositories\DiaryNote\DiaryNoteRepository;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,9 +46,20 @@ class DiaryNoteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DiaryNoteRequest $request)
     {
-        //
+        // $diary = new DiaryNote();
+        // $diary->title = $request->title;
+        // $diary->context = $request->context;
+        // $diary->accent = $request->accent;
+        // $diary->english = $request->english;
+        // $diary->indonesia = $request->indonesia;
+        // $diary->save();
+        $diary = DiaryNote::create($request->all());
+        return \response()->json([
+            'message' => "success",
+            'data' => $diary
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -57,7 +70,11 @@ class DiaryNoteController extends Controller
      */
     public function show($id)
     {
-        //
+        $diary = DiaryNote::findOrFail($id);
+        return \response()->json([
+            'message' => "success",
+            'data' => $diary
+        ], Response::HTTP_OK);
     }
 
     /**

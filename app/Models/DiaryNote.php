@@ -10,4 +10,9 @@ class DiaryNote extends Model
     use HasFactory;
     protected $fillable = ['title', 'context', 'accent', 'english', 'indonesia'];
     public $timestamps = true;
+
+    // public function getRouteKey()
+    // {
+    //     return $this->slug;
+    // }
 }
