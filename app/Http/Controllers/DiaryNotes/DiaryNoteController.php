@@ -31,6 +31,16 @@ class DiaryNoteController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -45,9 +55,9 @@ class DiaryNoteController extends Controller
         // $diary->english = $request->english;
         // $diary->indonesia = $request->indonesia;
         // $diary->save();
-        $diary = DiaryNote::create($request->all());
+        $diary = $this->diary->createDiary($request->all());
         return \response()->json([
-            'message' => "success",
+            'message' => 'success',
             'data' => $diary
         ], Response::HTTP_CREATED);
     }
@@ -60,9 +70,15 @@ class DiaryNoteController extends Controller
      */
     public function show($id)
     {
-        $diary = DiaryNote::findOrFail($id);
+        $diary = $this->diary->getById($id);
+        if (empty($diary)) {
+            return \response()->json([
+                'message' => 'not found',
+                'data' => null
+            ], Response::HTTP_NOT_FOUND);
+        }
         return \response()->json([
-            'message' => "success",
+            'message' => 'success',
             'data' => $diary
         ], Response::HTTP_OK);
     }
@@ -87,9 +103,7 @@ class DiaryNoteController extends Controller
      */
     public function update(DiaryNoteRequest $request, $id)
     {
-        $diary = DiaryNote::findOrFail($id);
-        $diary->update($request->all());
-        $diary->save();
+        $diary = $this->diary->updateDiary($request->all(), $id);
         return \response()->json([
             'message' => 'success',
             'data' => $diary
@@ -104,8 +118,7 @@ class DiaryNoteController extends Controller
      */
     public function destroy($id)
     {
-        $diary = DiaryNote::findOrFail($id);
-        $diary->delete();
+        $this->diary->deleteDiary($id);
         return \response()->json([
             'message' => 'success',
         ], Response::HTTP_OK);
