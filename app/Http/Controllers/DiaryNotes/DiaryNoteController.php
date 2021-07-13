@@ -3,10 +3,17 @@
 namespace App\Http\Controllers\DiaryNotes;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\DiaryNote\DiaryNoteRepository;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DiaryNoteController extends Controller
 {
+    protected $diary;
+    public function __construct(DiaryNoteRepository $diaryNoteRepository)
+    {
+        $this->diary = $diaryNoteRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +21,11 @@ class DiaryNoteController extends Controller
      */
     public function index()
     {
-        //
+        $diaryNotes = $this->diary->getAll();
+        return \response()->json([
+            'message' => 'success',
+            'data' => $diaryNotes
+        ], Response::HTTP_OK);
     }
 
     /**
