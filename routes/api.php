@@ -22,4 +22,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // Route::apiResource('articles', ArticleController::class);
 //Route::get('articles', [ArticleController::class, 'index']);
 //Route::post('articles/{article:slug}', [ArticleController::class, 'show']);
-Route::apiResource('articles',ArticleController::class);
+// Route::apiResource('articles',ArticleController::class);
+Route::post('articles', [ArticleController::class, 'index']);
