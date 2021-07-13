@@ -8,7 +8,7 @@ use App\Models\Article;
 
 interface IArticleRepository
 {
-    public function getAll();
-//    public function getBySlug($article);
+    public function getAll($request);
+    //    public function getBySlug($article);
     public function storeArticle($request);
 }

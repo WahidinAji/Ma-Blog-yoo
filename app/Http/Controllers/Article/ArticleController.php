@@ -19,28 +19,35 @@ class ArticleController extends Controller
         $this->articles = $articles;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $article = $this->articles->getAll();
-        return response()->json([
-            'message' => 'success',
-            'data' => $article
-        ],Response::HTTP_OK);
-    }
-    public function show(Article $article){
-        $response = \response()->json([
-            'message' => 'success',
-            'data' => $article
-        ],Response::HTTP_OK);
-        return $response;
-    }
-    public function store(ArticleRequest $request){
-        $article = $this->articles->storeArticle($request);
-        $response = \response()->json([
-            'message'=> 'Article created success',
-            'data'=> $article
-        ],Response::HTTP_CREATED);
-        return $response;
-    }
+        if ($request->has('betw')) {
+            DB::enableQueryLog();
+            $article = $this->articles->getAll($request->betw);
 
+            // \dd(DB::getQueryLog());
+            return response()->json([
+                'message' => 'success',
+                'data' => $article
+            ], Response::HTTP_OK);
+        }
+    }
+    public function show(Article $article)
+    {
+        return \response()->json([
+            'message' => 'success',
+            'data' => $article
+        ], Response::HTTP_OK);
+    }
+    public function store(ArticleRequest $request)
+    {
+        $article = $this->articles->storeArticle($request);
+        return \response()->json([
+            'message' => 'Article created success',
+            'data' => $article
+        ], Response::HTTP_CREATED);
+    }
+    public function destroy(Article $article)
+    {
+    }
 }
